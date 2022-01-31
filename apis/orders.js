@@ -72,7 +72,6 @@ router.get("/:userId", async (req, res) => {
 });
 
 // Book service API
-// "/book-a-service"
 router.post("/book-a-service", async (req, res) => {
     const { userId, serviceId, phone, address } = req.body;
     try {

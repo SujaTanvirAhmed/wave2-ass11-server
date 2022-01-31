@@ -1,4 +1,3 @@
-// const { ObjectId } = require('mongodb');
 const express = require('express');
 const { usersCollection } = require('../mongodb/mongodb-conn');
 const router = express.Router();
@@ -20,14 +19,20 @@ router.post("/login", async (req, res) => {
     const incomingUser = req.body;
     try {
         // Check if a user exists
-        const result = await usersCollection.findOne({ email: incomingUser.email });
-        if (result) {
+        const findResult = await usersCollection.findOne({ email: incomingUser.email });
+        if (findResult) {
             // User exists in db
-            res.json({ userId: result._id, userRole: result.role });
+            res.json({ userId: findResult._id, userRole: findResult.role });
         } else {
-            res.json({ userId: "", userRole: "" });
+            // User doesn't exist in db
+            const newUser = {
+                name: incomingUser.name,
+                email: incomingUser.email,
+                role: "user"
+            };
+            const insertResult = await usersCollection.insertOne(newUser);
+            res.json({ userId: insertResult.insertedId, userRole: "user" });
         }
-        res.json({ userId: "", userRole: "" });
     }
     catch {
         res.json({ userId: "", userRole: "" });

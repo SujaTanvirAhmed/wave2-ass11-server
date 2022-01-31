@@ -36,11 +36,11 @@ router.post("/", async (req, res) => {
 router.post("/remove", async (req, res) => {
     const { userId, serviceId } = req.body;
     try {
-        const updateReq = await ordersCollection.updateOne(
-            { user: userId },
-            { $pull: { orders_array: serviceId } }
-        )
-        if ((await updateReq.modifiedCount) === 1) {
+        const findResult = await servicesCollection.findOne(
+            { user: userId, service: serviceId }
+        );
+        if (findResult) {
+            servicesCollection.deleteOne(findResult);
             res.json({ message: "SUCCESS" });
         }
     }

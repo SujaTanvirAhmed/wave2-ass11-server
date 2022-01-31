@@ -1,8 +1,8 @@
 const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
+
 const port = process.env.PORT || 5000;
-// const { usersCollection } = require('./mongodb/mongodb-conn');
 
 const reviewsApi = require('./apis/reviews');
 const aboutApi = require('./apis/about');
@@ -19,7 +19,7 @@ const app = express();
 app.use(cors());
 app.use(express.json());
 
-// Main function
+// Main function declaration
 async function run() {
     try {
         // Home API
@@ -53,7 +53,7 @@ async function run() {
         // console.log("An un-avoidable message");
     }
 }
-
+// Run the main function
 run().catch(console.dir);
 
 // Run the server
